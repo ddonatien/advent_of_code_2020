@@ -12,10 +12,13 @@ fn main(){
         for line in lines {
             if let Ok(ip) = line {
                 let cap = re.captures(&ip).unwrap();
-                let min: u8 = cap[1].parse::<u8>().unwrap();
-                let max: u8 = cap[2].parse::<u8>().unwrap();
+                let alpha: u8 = cap[1].parse::<u8>().unwrap();
+                let beta: u8 = cap[2].parse::<u8>().unwrap();
                 let l: char = cap[3].chars().next().unwrap();
-                if check_pwd(min, max, l, &cap[4]) {
+                // if check_pwd_1(alpha, beta, l, &cap[4]) {
+                //     count +=1;
+                // }
+                if check_pwd_2(alpha as usize, beta as usize, l, &cap[4]) {
                     count +=1;
                 }
             }
@@ -24,7 +27,7 @@ fn main(){
     println!("{} valid passwords", count);
 }
 
-fn check_pwd(min: u8, max: u8, l: char, pwd: &str) -> bool {
+fn check_pwd_1(min: u8, max: u8, l: char, pwd: &str) -> bool {
     let mut count: u8 = 0;
     let res: bool;
     for c in pwd.chars() {
@@ -37,6 +40,18 @@ fn check_pwd(min: u8, max: u8, l: char, pwd: &str) -> bool {
     }
     else {
         res = false;
+    }
+    return res;
+}
+
+fn check_pwd_2(pos1: usize, pos2: usize, l: char, pwd: &str) -> bool {
+    let mut res: bool = false;
+    let chars: Vec<char> = pwd.chars().collect();
+    if chars[pos1 - 1] == l {
+        res = !res;
+    }
+    if chars[pos2 - 1] == l {
+        res = !res;
     }
     return res;
 }
